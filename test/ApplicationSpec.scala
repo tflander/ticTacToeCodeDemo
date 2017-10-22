@@ -28,7 +28,11 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
       status(newGame) mustBe OK
       contentType(newGame) mustBe Some("text/html")
       implicit val page = pageAsXml(newGame)
-      buttonLabels mustBe (Seq("New Game (You First)", "New Game (Me First)"))
+      buttonLabels mustBe (Seq(
+        "Easy",
+        "Hard",
+        "Impossible"
+      ))
 
     }
 
