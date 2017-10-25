@@ -14,7 +14,7 @@ function allowClickOnEmptyCells() {
 			var cells = $(".ticTacToe").text().replace(/ /g, "");
 			var baseUrl = document.location.href.substr(0, document.location.href.lastIndexOf("/"));
 			if(baseUrl.endsWith("0")) {
-                baseUrl += "/1"
+                baseUrl += "/ttt"
             }
 			document.location.href = baseUrl + "/" + gameMode() + cells;
 		}
@@ -25,15 +25,6 @@ function disableClicks() {
 	$(".Clear").unbind("click");
 }
 
-function determineLevelForNewGame(button) {
-  var classes = button.getAttribute("class").split(' ');
-  var level = classes.filter(function(className) {
-    return (className.startsWith("level"));
-  })[0].replace("level", "");
-  return level;
-}
-
-var level = "1"
 $(document).ready(function() {
 
 	// start behavior for playing tic-tac-toe
@@ -44,12 +35,11 @@ $(document).ready(function() {
 	allowClickOnEmptyCells();
 
 	$(".meFirst").click(function() {
-	        level = determineLevelForNewGame(this);
-			document.location.href = "/" + level + "/" + gameMode();
+			var baseUrl = document.location.href.substr(0, document.location.href.lastIndexOf("/"));
+			document.location.href = baseUrl + "/" + gameMode();
 	});
 
 	$(".youFirst").click(function() {
-	    level = determineLevelForNewGame(this);
 		$(".ticTacToe td").removeClass().addClass("Clear").html("A");
 		$("#message").text("")
 		allowClickOnEmptyCells();

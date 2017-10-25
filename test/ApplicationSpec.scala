@@ -18,7 +18,7 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
       status(newGame) mustBe OK
       contentType(newGame) mustBe Some("text/html")
       val page = pageAsXml(newGame)
-      pageHeading(page) mustBe ("Unbeatable Tic Tac Toe")
+      pageHeading(page) mustBe("Unbeatable Tic Tac Toe")
 
     }
 
@@ -28,27 +28,23 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
       status(newGame) mustBe OK
       contentType(newGame) mustBe Some("text/html")
       implicit val page = pageAsXml(newGame)
-      buttonLabels mustBe (Seq(
-        "Easy",
-        "Hard",
-        "Impossible"
-      ))
+      buttonLabels mustBe(Seq("New Game (You First)", "New Game (Me First)"))
 
     }
 
-    "render a board with the computer going first for a new unbeatable game" in {
-      val newGame = route(app, FakeRequest(GET, "/1/")).get
+    "render a board with the computer going first for a new game" in {
+      val newGame = route(app, FakeRequest(GET, "/ttt/")).get
 
       implicit val page = pageAsXml(newGame)
-      println(board)
+      println (board)
       board.contains("X") mustBe true
     }
 
-    "render a board with the computer going first for a new easier game" in {
-      val newGame = route(app, FakeRequest(GET, "/2/")).get
+    "X blocks the win for a game in progress" in {
+      val newGame = route(app, FakeRequest(GET, "/ttt/AAOXOXAAA")).get
+
       implicit val page = pageAsXml(newGame)
-      println(board)
-      board.contains("X") mustBe true
+      board mustBe("..OXOXX..")
     }
 
   }
@@ -65,8 +61,8 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
   private def board(implicit page: Elem) = {
 
     def classNodeToCellState(classNode: Node) = {
-      val stateClass = classNode.text.split(" ")(1)
-      if (stateClass == "Clear") "." else stateClass
+       val stateClass = classNode.text.split(" ")(1)
+       if (stateClass == "Clear") "." else stateClass
     }
 
     (page \\ "table" \ "tr" \ "td")
