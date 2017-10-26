@@ -31,7 +31,7 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
       buttonLabels mustBe (Seq(
         "Easy",
         "Hard",
-        "Impossible"
+        "Umpossible"
       ))
 
     }
